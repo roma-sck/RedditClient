@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">RedditClient</string>
+    <string name="app_name">Reddit Top News</string>
+
+    <string name="minutes_ago">%1$s minutes ago</string>
+    <string name="hours_ago">%1$s hours ago</string>
+    <string name="days">days</string>
+    <string name="posted_by">posted by %1$s</string>
+    <string name="comments">%1$s comments</string>
+
+    <string name="something_went_wong_error">Sorry, something went wrong, please try again later.</string>
+    <string name="no_internet_error">No network available, please check your WiFi or Data connection.</string>
+
 </resources>
