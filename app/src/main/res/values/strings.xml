@@ -9,5 +9,6 @@
 
     <string name="something_went_wong_error">Sorry, something went wrong, please try again later.</string>
     <string name="no_internet_error">No network available, please check your WiFi or Data connection.</string>
+    <string name="no_data">No data</string>
 
 </resources>

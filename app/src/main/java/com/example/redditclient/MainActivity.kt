@@ -11,15 +11,13 @@ import android.support.v7.widget.LinearLayoutManager
 import com.example.redditclient.adapters.PostAdapter
 import com.example.redditclient.api.RedditApiClient
 import com.example.redditclient.api.RedditPost
-import com.example.redditclient.utils.Const
-import com.example.redditclient.utils.RedditPostItemDiffUtilCallback
-import com.example.redditclient.utils.beGone
-import com.example.redditclient.utils.beVisible
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import android.support.customtabs.CustomTabsIntent
 import android.net.Uri
+import android.os.Handler
 import android.support.v4.content.ContextCompat
+import com.example.redditclient.utils.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         adapter = PostAdapter { openPostPage(it) }
         rvRedditPosts.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         rvRedditPosts.adapter = adapter
+
+        swipeRefresh.setOnRefreshListener {
+            getRedditNews()
+        }
     }
 
     private fun openPostPage(item: RedditPost?) {
@@ -117,6 +119,12 @@ class MainActivity : AppCompatActivity() {
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
         adapter.postsList = list
         diffResult.dispatchUpdatesTo(adapter)
+
+        showEmpty()
+    }
+
+    private fun showEmpty() {
+        tvEmpty.beVisibleIf(adapter.postsList.isEmpty())
     }
 
     private fun showLoader() {
@@ -125,11 +133,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideLoader() {
         progressBar.beGone()
+        swipeRefresh.isRefreshing = false
     }
 
     private fun handleError(throwable: Throwable) {
         hideLoader()
         showError(throwable)
+        showEmpty()
     }
 
     private fun showError(throwable: Throwable) {
