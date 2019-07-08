@@ -8,7 +8,6 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import com.example.redditclient.adapters.PostAdapter
-import com.example.redditclient.api.RedditPost
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.customtabs.CustomTabsIntent
 import android.net.Uri
@@ -17,6 +16,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity
 import com.example.redditclient.mvp.MainView
 import com.example.redditclient.utils.*
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.example.redditclient.adapters.PostAdapterItem
 import com.example.redditclient.mvp.MainPresenter
 import com.example.redditclient.mvp.PostsViewModel
 
@@ -35,7 +35,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         initAdapter()
         initListeners()
 
-        mainPresenter.getRedditNews()
+        mainPresenter.getRedditNews(true)
     }
 
     private fun initAdapter() {
@@ -47,16 +47,15 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private fun initListeners() {
         swipeRefresh.setOnRefreshListener {
             adapter.postsList = mutableListOf()
-            mainPresenter.refresh()
-            mainPresenter.getRedditNews()
+            mainPresenter.getRedditNews(true)
         }
 
         rvRedditPosts.addOnScrollListener(
-            LoadMoreScrollListener({ mainPresenter.getRedditNews() }, rvRedditPosts.layoutManager as LinearLayoutManager)
+            LoadMoreScrollListener({ mainPresenter.getRedditNews(false) }, rvRedditPosts.layoutManager as LinearLayoutManager)
         )
     }
 
-    private fun openPostPage(item: RedditPost?) {
+    private fun openPostPage(item: PostAdapterItem?) {
         item?.permalink?.let { link ->
             val builder = CustomTabsIntent.Builder()
                 .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -73,15 +72,15 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
-    private fun updatePostsList(list: List<RedditPost>) {
-//        val diffUtilCallback = RedditPostItemDiffUtilCallback(adapter.postsList, list)
-//        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
-//        adapter.postsList = list
-//        diffResult.dispatchUpdatesTo(adapter)
+    private fun updatePostsList(list: List<PostAdapterItem>) {
+        val diffUtilCallback = RedditPostItemDiffUtilCallback(adapter.postsList, list)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+        adapter.postsList = list.toMutableList()
+        diffResult.dispatchUpdatesTo(adapter)
 
-        val oldPos = adapter.postsList.size
-        adapter.postsList.addAll(list)
-        adapter.notifyItemRangeChanged(oldPos, adapter.postsList.size-1)
+//        val oldPos = adapter.postsList.size
+//        adapter.postsList.addAll(list)
+//        adapter.notifyItemRangeChanged(oldPos, adapter.postsList.size-1)
 
         showEmpty()
     }

@@ -11,7 +11,7 @@ data class RedditDataResponse(
 data class RedditChildrenResponse(val data: RedditPost)
 
 data class RedditPost(
-    val id: String?,
+    val id: String,
     val title: String?,
     val author: String?,
     val subreddit: String?,

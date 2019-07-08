@@ -2,8 +2,12 @@ package com.example.redditclient.mvp
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import com.example.redditclient.RedditApp
+import com.example.redditclient.adapters.PostAdapterItem
 import com.example.redditclient.api.RedditApiClient
 import com.example.redditclient.api.RedditPost
+import com.example.redditclient.db.RedditPostEntity
+import com.example.redditclient.db.RedditPostsDb
 import com.example.redditclient.utils.Const
 import kotlinx.coroutines.*
 
@@ -40,8 +44,8 @@ class MainPresenter: MvpPresenter<MainView>() {
         viewState.hideLoader()
     }
 
-    fun getRedditNews() {
-        println("--------after="+after)
+    fun getRedditNews(isInitialLoading: Boolean) {
+        if(isInitialLoading) after = ""
         scopeUi.launch {
             showLoader()
 
@@ -50,30 +54,57 @@ class MainPresenter: MvpPresenter<MainView>() {
             }
             if(apiResponse.isSuccessful && apiResponse.body() != null) {
                 after = apiResponse.body()!!.data.after.orEmpty()
-                val news = apiResponse.body()!!.data.children.map {
-                    val item = it.data
-                    RedditPost(
-                        item.id,
-                        item.title,
-                        item.author,
-                        item.subreddit,
-                        item.created,
-                        item.thumbnail,
-                        item.score,
-                        item.num_comments,
-                        item.permalink
+                val posts = apiResponse.body()!!.data.children.map {
+                    it.data
+                }
+
+                val postsFromDb = withContext(Dispatchers.IO) {
+                    val db = RedditPostsDb.getAppDataBase(RedditApp.instance.applicationContext)
+                    if(isInitialLoading) db?.clearAllTables()
+                    posts.let { postsList ->
+                        postsList.forEach { post ->
+                            db?.postsDao()?.insert(
+                                RedditPostEntity(
+                                    post.id,
+                                    post.title,
+                                    post.author,
+                                    post.subreddit,
+                                    post.created,
+                                    post.thumbnail,
+                                    post.score,
+                                    post.num_comments,
+                                    post.permalink
+                                )
+                            )
+                        }
+                    }
+
+                    db?.postsDao()?.getAllPosts()
+                }
+
+                val adapterItems = mutableListOf<PostAdapterItem>()
+                postsFromDb?.forEach {
+                    adapterItems.add(
+                        PostAdapterItem(
+                            it.id,
+                            it.title,
+                            it.author,
+                            it.subreddit,
+                            it.created,
+                            it.thumbnail,
+                            it.score,
+                            it.num_comments,
+                            it.permalink
+                        )
                     )
                 }
-                viewState.render(PostsViewModel(postsList = news))
+
+                viewState.render(PostsViewModel(postsList = adapterItems))
             } else {
                 viewState.showError(Exception())
             }
 
             hideLoader()
         }
-    }
-
-    fun refresh() {
-        after = ""
     }
 }

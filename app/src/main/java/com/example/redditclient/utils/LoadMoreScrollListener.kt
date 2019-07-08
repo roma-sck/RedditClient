@@ -32,7 +32,7 @@ class LoadMoreScrollListener(
             
             if(totalItemCount == Const.LOAD_NEWS_MAX_CONT) return
 
-            if (!loading && (((firstVisibleItem + visibleThreshold + 1) >= totalItemCount) && firstVisibleItem >= 0)) {
+            if (!loading && (((firstVisibleItem + visibleThreshold) >= totalItemCount/2) && firstVisibleItem >= 0)) {
                 onLoadMore()
                 loading = true
             }

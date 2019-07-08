@@ -1,11 +1,11 @@
 package com.example.redditclient.utils
 
 import android.support.v7.util.DiffUtil
-import com.example.redditclient.api.RedditPost
+import com.example.redditclient.adapters.PostAdapterItem
 
 class RedditPostItemDiffUtilCallback(
-    private val oldList: List<RedditPost>,
-    private val newList: List<RedditPost>
+    private val oldList: List<PostAdapterItem>,
+    private val newList: List<PostAdapterItem>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {

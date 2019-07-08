@@ -6,17 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.redditclient.R
-import com.example.redditclient.api.RedditPost
 import com.example.redditclient.utils.beGone
 import kotlinx.android.synthetic.main.post_list_item.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class PostAdapter(
-    private val onClick: (RedditPost) -> Unit
+    private val onClick: (PostAdapterItem) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.VH>() {
 
-    var postsList: MutableList<RedditPost> = mutableListOf()
+    var postsList: MutableList<PostAdapterItem> = mutableListOf()
 
     override fun onCreateViewHolder(container: ViewGroup, viewType: Int): VH {
         return VH(
@@ -33,7 +32,7 @@ class PostAdapter(
 
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: RedditPost) {
+        fun bind(item: PostAdapterItem) {
             if(item.thumbnail.isNullOrEmpty()) itemView.ivPostImage.beGone()
             else Glide.with(itemView.context).load(item.thumbnail).centerCrop().into(itemView.ivPostImage)
 

@@ -6,7 +6,7 @@ buildscript {
     ext.retrofit2_version = '2.6.0'
     ext.glide_version = '4.9.0'
     ext.moxy_version = "1.5.5"
-    ext.lifecycle_version = "1.1.1"
+    ext.room_version = "1.1.1"
 
     repositories {
         google()
