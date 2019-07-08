@@ -3,38 +3,35 @@ package com.example.redditclient
 import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import com.example.redditclient.adapters.PostAdapter
-import com.example.redditclient.api.RedditApiClient
 import com.example.redditclient.api.RedditPost
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
 import android.support.customtabs.CustomTabsIntent
 import android.net.Uri
-import android.os.Handler
 import android.support.v4.content.ContextCompat
+import com.arellomobile.mvp.MvpAppCompatActivity
+import com.example.redditclient.mvp.MainView
 import com.example.redditclient.utils.*
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.example.redditclient.mvp.MainPresenter
+import com.example.redditclient.mvp.PostsViewModel
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity(), MainView {
+
+    @InjectPresenter
+    lateinit var mainPresenter: MainPresenter
 
     private lateinit var adapter: PostAdapter
-
-    private val job = SupervisorJob()
-
-    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
-        handleError(throwable)
-    }
-
-    private val scopeUi = CoroutineScope(Dispatchers.Main + job + errorHandler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         initUi()
     }
 
@@ -44,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         rvRedditPosts.adapter = adapter
 
         swipeRefresh.setOnRefreshListener {
-            getRedditNews()
+            mainPresenter.getRedditNews()
         }
     }
 
@@ -67,51 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        getRedditNews()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        cancelAllWork()
-    }
-
-    private fun cancelAllWork() {
-        scopeUi.coroutineContext.cancelChildren()
-    }
-
-    private fun getRedditNews() {
-        scopeUi.launch {
-            showLoader()
-
-            val apiResponse = withContext(Dispatchers.IO) {
-                RedditApiClient().getTopNewsAsync("", Const.LOAD_NEWS_LIMIT)
-            }
-            if(apiResponse.isSuccessful && apiResponse.body() != null) {
-                val news = apiResponse.body()!!.data.children.map {
-                    val item = it.data
-                    RedditPost(
-                        item.id,
-                        item.title,
-                        item.author,
-                        item.subreddit,
-                        item.created,
-                        item.thumbnail,
-                        item.score,
-                        item.num_comments,
-                        item.permalink
-                    )
-                }
-                updateUi(news)
-            } else {
-                showError(Exception())
-            }
-
-            hideLoader()
-        }
-    }
-
-    private fun updateUi(postsList: List<RedditPost>) {
-        updatePostsList(postsList)
+        mainPresenter.getRedditNews()
     }
 
     private fun updatePostsList(list: List<RedditPost>) {
@@ -127,28 +80,27 @@ class MainActivity : AppCompatActivity() {
         tvEmpty.beVisibleIf(adapter.postsList.isEmpty())
     }
 
-    private fun showLoader() {
-        progressBar.beVisible()
-    }
-
-    private fun hideLoader() {
-        progressBar.beGone()
-        swipeRefresh.isRefreshing = false
-    }
-
-    private fun handleError(throwable: Throwable) {
-        hideLoader()
-        showError(throwable)
+    override fun showError(throwable: Throwable) {
         showEmpty()
-    }
-
-    private fun showError(throwable: Throwable) {
         val alertDialogBuilder = AlertDialog.Builder(this)
 
         if(!isNetworkConnected()) alertDialogBuilder.setMessage(getString(R.string.no_internet_error))
         else alertDialogBuilder.setMessage(getString(R.string.something_went_wong_error))
 
         alertDialogBuilder.show()
+    }
+
+    override fun showLoader() {
+        progressBar.beVisible()
+    }
+
+    override fun hideLoader() {
+        progressBar.beGone()
+        swipeRefresh.isRefreshing = false
+    }
+
+    override fun render(viewModel: PostsViewModel) {
+        updatePostsList(viewModel.postsList)
     }
 
     private fun isNetworkConnected(): Boolean {
