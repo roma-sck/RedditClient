@@ -1,4 +1,4 @@
-package com.example.redditclient.utils
+package com.example.redditclient.api
 
 object Const {
 

@@ -17,6 +17,7 @@ import com.example.redditclient.mvp.MainView
 import com.example.redditclient.utils.*
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.example.redditclient.adapters.PostAdapterItem
+import com.example.redditclient.api.Const
 import com.example.redditclient.mvp.MainPresenter
 import com.example.redditclient.mvp.PostsViewModel
 
@@ -52,7 +53,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
 
         rvRedditPosts.addOnScrollListener(
-            LoadMoreScrollListener({ mainPresenter.getRedditNews(false) }, rvRedditPosts.layoutManager as LinearLayoutManager)
+            LoadMoreScrollListener(
+                { mainPresenter.getRedditNews(false) },
+                rvRedditPosts.layoutManager as LinearLayoutManager
+            )
         )
     }
 
@@ -90,7 +94,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         showEmpty()
         val alertDialogBuilder = AlertDialog.Builder(this)
 
-        if(!isNetworkConnected()) alertDialogBuilder.setMessage(getString(R.string.no_internet_error))
+        if (!isNetworkConnected()) alertDialogBuilder.setMessage(getString(R.string.no_internet_error))
         else alertDialogBuilder.setMessage(getString(R.string.something_went_wong_error))
 
         alertDialogBuilder.show()

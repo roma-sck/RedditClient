@@ -1,6 +1,5 @@
 package com.example.redditclient.api
 
-import com.example.redditclient.utils.Const
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import okhttp3.OkHttpClient
@@ -31,7 +30,7 @@ class RedditApiClient {
         redditApi = retrofit.create(RedditApi::class.java)
     }
 
-    public suspend fun getTopNewsAsync(after: String, limit: Int): Response<RedditApiResponse> {
+    suspend fun getTopNewsAsync(after: String, limit: Int): Response<RedditApiResponse> {
         return redditApi.getTopNewsAsync(after, limit)
     }
 }

@@ -2,6 +2,7 @@ package com.example.redditclient.utils
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.example.redditclient.api.Const
 
 class LoadMoreScrollListener(
     val onLoadMore: () -> Unit,
@@ -29,10 +30,10 @@ class LoadMoreScrollListener(
                     previousTotal = totalItemCount
                 }
             }
-            
-            if(totalItemCount == Const.LOAD_NEWS_MAX_CONT) return
 
-            if (!loading && (((firstVisibleItem + visibleThreshold) >= totalItemCount/2) && firstVisibleItem >= 0)) {
+            if (totalItemCount == Const.LOAD_NEWS_MAX_CONT) return
+
+            if (!loading && (((firstVisibleItem + visibleThreshold) >= totalItemCount / 2) && firstVisibleItem >= 0)) {
                 onLoadMore()
                 loading = true
             }

@@ -2,7 +2,7 @@ package com.example.redditclient
 
 import android.app.Application
 
-class RedditApp: Application() {
+class RedditApp : Application() {
 
     override fun onCreate() {
         super.onCreate()

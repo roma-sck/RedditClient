@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 
 @Database(entities = [RedditPostEntity::class], version = 1, exportSchema = false)
-abstract class RedditPostsDb: RoomDatabase() {
+abstract class RedditPostsDb : RoomDatabase() {
 
     abstract fun postsDao(): RedditPostsDao
 

@@ -7,6 +7,8 @@ import retrofit2.http.Query
 interface RedditApi {
 
     @GET("/top.json")
-    suspend fun getTopNewsAsync(@Query("after") after: String,
-                                @Query("limit") limit: Int): Response<RedditApiResponse>
+    suspend fun getTopNewsAsync(
+        @Query("after") after: String,
+        @Query("limit") limit: Int
+    ): Response<RedditApiResponse>
 }

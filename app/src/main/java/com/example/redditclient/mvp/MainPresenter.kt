@@ -5,14 +5,13 @@ import com.arellomobile.mvp.MvpPresenter
 import com.example.redditclient.RedditApp
 import com.example.redditclient.adapters.PostAdapterItem
 import com.example.redditclient.api.RedditApiClient
-import com.example.redditclient.api.RedditPost
 import com.example.redditclient.db.RedditPostEntity
 import com.example.redditclient.db.RedditPostsDb
-import com.example.redditclient.utils.Const
+import com.example.redditclient.api.Const
 import kotlinx.coroutines.*
 
 @InjectViewState
-class MainPresenter: MvpPresenter<MainView>() {
+class MainPresenter : MvpPresenter<MainView>() {
 
     private val job = SupervisorJob()
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
@@ -45,14 +44,14 @@ class MainPresenter: MvpPresenter<MainView>() {
     }
 
     fun getRedditNews(isInitialLoading: Boolean) {
-        if(isInitialLoading) after = ""
+        if (isInitialLoading) after = ""
         scopeUi.launch {
             showLoader()
 
             val apiResponse = withContext(Dispatchers.IO) {
                 RedditApiClient().getTopNewsAsync(after, Const.LOAD_NEWS_LIMIT)
             }
-            if(apiResponse.isSuccessful && apiResponse.body() != null) {
+            if (apiResponse.isSuccessful && apiResponse.body() != null) {
                 after = apiResponse.body()!!.data.after.orEmpty()
                 val posts = apiResponse.body()!!.data.children.map {
                     it.data
@@ -60,7 +59,7 @@ class MainPresenter: MvpPresenter<MainView>() {
 
                 val postsFromDb = withContext(Dispatchers.IO) {
                     val db = RedditPostsDb.getAppDataBase(RedditApp.instance.applicationContext)
-                    if(isInitialLoading) db?.clearAllTables()
+                    if (isInitialLoading) db?.clearAllTables()
                     posts.let { postsList ->
                         postsList.forEach { post ->
                             db?.postsDao()?.insert(

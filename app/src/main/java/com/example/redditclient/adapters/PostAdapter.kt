@@ -21,7 +21,8 @@ class PostAdapter(
         return VH(
             LayoutInflater.from(container.context).inflate(
                 R.layout.post_list_item, container, false
-            ))
+            )
+        )
     }
 
     override fun getItemCount(): Int = postsList.size
@@ -40,7 +41,7 @@ class PostAdapter(
                 .into(itemView.ivPostImage)
 
             itemView.tvTitle.text = item.title.orEmpty()
-            itemView.tvSubreddit.text = item.subreddit.orEmpty()
+            itemView.tvSubreddit.text = itemView.context.getString(R.string.subreddit_prefix, item.subreddit.orEmpty())
             itemView.tvAuthor.text = itemView.context.getString(R.string.posted_by, item.author.orEmpty())
             showDate(item.created)
             itemView.tvComments.text = itemView.context.getString(R.string.comments, item.num_comments.toString())
@@ -53,7 +54,7 @@ class PostAdapter(
             if (createdDate == null) itemView.tvDate.beGone()
             else {
                 try {
-                    val postCreatedDate = Date(createdDate*1000L)
+                    val postCreatedDate = Date(createdDate * 1000L)
                     val now = Date()
                     val minutes = TimeUnit.MILLISECONDS.toMinutes(now.time - postCreatedDate.time)
                     val hours = TimeUnit.MILLISECONDS.toHours(now.time - postCreatedDate.time)

@@ -6,6 +6,7 @@
     <string name="days">days</string>
     <string name="posted_by">posted by %1$s</string>
     <string name="comments">%1$s comments</string>
+    <string name="subreddit_prefix">r/%1$s</string>
 
     <string name="something_went_wong_error">Sorry, something went wrong, please try again later.</string>
     <string name="no_internet_error">No network available, please check your WiFi or Data connection.</string>

@@ -6,7 +6,7 @@ import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface MainView: MvpView {
+interface MainView : MvpView {
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showError(throwable: Throwable)
