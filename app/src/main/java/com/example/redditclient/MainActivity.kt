@@ -46,7 +46,8 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     private fun initListeners() {
         swipeRefresh.setOnRefreshListener {
-            adapter.postsList = mutableListOf()
+            adapter.postsList.clear()
+            adapter.notifyDataSetChanged()
             mainPresenter.getRedditNews(true)
         }
 
