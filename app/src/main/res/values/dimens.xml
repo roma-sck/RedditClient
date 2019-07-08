@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="empty_text_size">30sp</dimen>
+    <dimen name="progressbar_size">40dp</dimen>
+
+    <dimen name="post_list_item_min_height">130dp</dimen>
+    <dimen name="post_list_item_padding">10dp</dimen>
+    <dimen name="post_image_size">100dp</dimen>
+    <dimen name="post_rating_icon_size">20dp</dimen>
+    <dimen name="post_list_item_title_text_size">18sp</dimen>
+
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+
+</resources>

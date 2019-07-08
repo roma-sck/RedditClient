@@ -24,7 +24,7 @@
                 android:id="@+id/tvEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
+                android:textSize="@dimen/empty_text_size"
                 android:text="@string/no_data"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -34,8 +34,8 @@
 
         <ProgressBar
                 android:id="@+id/progressBar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/progressbar_size"
+                android:layout_height="@dimen/progressbar_size"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

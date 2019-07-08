@@ -5,18 +5,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:minHeight="130dp">
+        android:padding="@dimen/post_list_item_padding"
+        android:minHeight="@dimen/post_list_item_min_height">
 
     <ImageView
             android:id="@+id/ivPostImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/post_image_size"
+            android:layout_height="@dimen/post_image_size"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/ic_launcher_background"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_10"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
@@ -25,13 +25,13 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivPostImage"
             app:layout_constrainedWidth="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15"
             tools:text="Post title"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="@dimen/post_list_item_title_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.0"/>
@@ -40,8 +40,8 @@
             android:id="@+id/tvSubreddit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
             tools:text="r/subreddit"
             android:textColor="@android:color/black"
             android:textStyle="bold"
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivPostImage"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
             tools:text="posted by author"
             app:layout_constraintTop_toBottomOf="@+id/tvSubreddit"/>
 
@@ -63,9 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivPostImage"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_5"
             tools:text="1 hour ago"
             app:layout_constraintTop_toBottomOf="@+id/tvAuthor"/>
 
@@ -74,20 +74,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivPostImage"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_5"
             tools:text="1 comment"
             app:layout_constraintTop_toBottomOf="@+id/tvDate"/>
 
     <ImageView
             android:id="@+id/ivRating"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/post_rating_icon_size"
+            android:layout_height="@dimen/post_rating_icon_size"
             app:layout_constraintStart_toEndOf="@+id/tvComments"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_5"
             android:src="@android:drawable/star_big_on"
             app:layout_constraintTop_toBottomOf="@+id/tvDate"/>
 
@@ -96,9 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivRating"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
             tools:text="100500"
             app:layout_constraintTop_toBottomOf="@+id/tvDate"/>
 

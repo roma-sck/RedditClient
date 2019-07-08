@@ -16,6 +16,8 @@ class MainPresenter: MvpPresenter<MainView>() {
     }
     private val scopeUi = CoroutineScope(Dispatchers.Main + job + errorHandler)
 
+    private var after = ""
+
     override fun destroyView(view: MainView) {
         super.destroyView(view)
         cancelAllWork()
@@ -39,13 +41,15 @@ class MainPresenter: MvpPresenter<MainView>() {
     }
 
     fun getRedditNews() {
+        println("--------after="+after)
         scopeUi.launch {
             showLoader()
 
             val apiResponse = withContext(Dispatchers.IO) {
-                RedditApiClient().getTopNewsAsync("", Const.LOAD_NEWS_LIMIT)
+                RedditApiClient().getTopNewsAsync(after, Const.LOAD_NEWS_LIMIT)
             }
             if(apiResponse.isSuccessful && apiResponse.body() != null) {
+                after = apiResponse.body()!!.data.after.orEmpty()
                 val news = apiResponse.body()!!.data.children.map {
                     val item = it.data
                     RedditPost(
@@ -67,5 +71,9 @@ class MainPresenter: MvpPresenter<MainView>() {
 
             hideLoader()
         }
+    }
+
+    fun refresh() {
+        after = ""
     }
 }

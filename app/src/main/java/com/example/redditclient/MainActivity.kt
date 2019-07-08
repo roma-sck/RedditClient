@@ -32,17 +32,28 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initUi()
+        initAdapter()
+        initListeners()
+
+        mainPresenter.getRedditNews()
     }
 
-    private fun initUi() {
+    private fun initAdapter() {
         adapter = PostAdapter { openPostPage(it) }
         rvRedditPosts.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         rvRedditPosts.adapter = adapter
+    }
 
+    private fun initListeners() {
         swipeRefresh.setOnRefreshListener {
+            adapter.postsList = mutableListOf()
+            mainPresenter.refresh()
             mainPresenter.getRedditNews()
         }
+
+        rvRedditPosts.addOnScrollListener(
+            LoadMoreScrollListener({ mainPresenter.getRedditNews() }, rvRedditPosts.layoutManager as LinearLayoutManager)
+        )
     }
 
     private fun openPostPage(item: RedditPost?) {
@@ -62,16 +73,15 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        mainPresenter.getRedditNews()
-    }
-
     private fun updatePostsList(list: List<RedditPost>) {
-        val diffUtilCallback = RedditPostItemDiffUtilCallback(adapter.postsList, list)
-        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
-        adapter.postsList = list
-        diffResult.dispatchUpdatesTo(adapter)
+//        val diffUtilCallback = RedditPostItemDiffUtilCallback(adapter.postsList, list)
+//        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+//        adapter.postsList = list
+//        diffResult.dispatchUpdatesTo(adapter)
+
+        val oldPos = adapter.postsList.size
+        adapter.postsList.addAll(list)
+        adapter.notifyItemRangeChanged(oldPos, adapter.postsList.size-1)
 
         showEmpty()
     }

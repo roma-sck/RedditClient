@@ -16,7 +16,7 @@ class PostAdapter(
     private val onClick: (RedditPost) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.VH>() {
 
-    var postsList: List<RedditPost> = listOf()
+    var postsList: MutableList<RedditPost> = mutableListOf()
 
     override fun onCreateViewHolder(container: ViewGroup, viewType: Int): VH {
         return VH(
