@@ -33,8 +33,11 @@ class PostAdapter(
     inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: PostAdapterItem) {
-            if(item.thumbnail.isNullOrEmpty()) itemView.ivPostImage.beGone()
-            else Glide.with(itemView.context).load(item.thumbnail).centerCrop().into(itemView.ivPostImage)
+            Glide.with(itemView.context)
+                .load(item.thumbnail)
+                .centerCrop()
+                .placeholder(R.drawable.post_image_placeholder)
+                .into(itemView.ivPostImage)
 
             itemView.tvTitle.text = item.title.orEmpty()
             itemView.tvSubreddit.text = item.subreddit.orEmpty()

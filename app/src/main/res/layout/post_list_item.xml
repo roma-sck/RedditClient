@@ -14,14 +14,16 @@
             android:layout_height="@dimen/post_image_size"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:src="@drawable/ic_launcher_background"
+            tools:src="@drawable/post_image_placeholder"
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginStart="@dimen/margin_10"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toStartOf="@+id/tvTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0"/>
 
     <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/ivPostImage"
             app:layout_constrainedWidth="true"
@@ -32,6 +34,8 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="@dimen/post_list_item_title_text_size"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.0"/>

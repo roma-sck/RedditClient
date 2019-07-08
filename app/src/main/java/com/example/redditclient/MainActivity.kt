@@ -79,10 +79,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         adapter.postsList = list.toMutableList()
         diffResult.dispatchUpdatesTo(adapter)
 
-//        val oldPos = adapter.postsList.size
-//        adapter.postsList.addAll(list)
-//        adapter.notifyItemRangeChanged(oldPos, adapter.postsList.size-1)
-
         showEmpty()
     }
 
