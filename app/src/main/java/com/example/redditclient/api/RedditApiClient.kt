@@ -7,19 +7,10 @@ import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 class RedditApiClient {
-
-    companion object {
-        private const val NETWORK_RESPONSE_TIMEOUT = 15L
-    }
-
     private val redditApi: RedditApi
 
     init {
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(NETWORK_RESPONSE_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(NETWORK_RESPONSE_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(NETWORK_RESPONSE_TIMEOUT, TimeUnit.SECONDS)
-            .build()
+        val okHttpClient = OkHttpClient.Builder().build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl(Const.REDDIT_BASE_URL)
